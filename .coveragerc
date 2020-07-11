@@ -1,0 +1,8 @@
+[run]
+omit =
+    */migrations/*.py
+    stock_portifolio_api/manage.py
+    */urls.py
+    */settings.py
+    */wsgi.py
+    */asgi.py
