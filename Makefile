@@ -37,7 +37,7 @@ migrate-dev: ##  Execute the migrations on the development environment
 
 requirements-pip:  ## Install the app requirements
 	@pip install --upgrade pip
-	@pip install -r requirements/development.txt
+	@pip install -r requirements/pip.txt
 
 requirements-apt:  ## Install ubuntu packages to provide the local development environment
 	@echo 'IMPORTANT: sudo is required to install system dependencies from `linux.apt` file'
@@ -46,17 +46,8 @@ requirements-apt:  ## Install ubuntu packages to provide the local development e
 createsuperuser:  ## Create the django admin superuser
 	$(DJANGO_CMD) createsuperuser
 
-create-admin-superuser-without-input:  ## Create a django admin superuser non-interactively. E.g.: make create-admin-superuser-without-input username=admin1 password=12345678 email=admin1@gmail.com
-	$(DJANGO_CMD) create_admin_superuser_without_input --username $(username) --password $(password) --noinput --email '$(email)'
-
-create_token:  ## Django REST Framework token creation - TODO: see if it in fact used
-	$(DJANGO_CMD) drf_create_token $(user)
-
 test: clean  ## Run the test suite without integration tests
 	py.test $(PROJECT_NAME) --ds=$(SETTINGS) -s -vvv
-
-test-ci: clean	## Run the test suite in CI
-	py.test $(PROJECT_NAME) --ds=$(SETTINGS) -s -vvv -m "not not_run_ci"
 
 test-matching: clean  ## Run only tests matching pattern. E.g.: make test-matching test=TestClassName
 	py.test $(PROJECT_NAME)/ -k $(test) --ds=$(SETTINGS) -s -vvv
@@ -91,9 +82,6 @@ runserver-dev: clean migrate-dev  ## Run development web server
 
 manage: clean ## Run command from manage.py
 	$(DJANGO_CMD) $(COMMAND)
-
-populate-all: clean ## Run populate_models
-	$(DJANGO_CMD) populate_models -m OrderType SourcingType PurchaseType PaymentCondition Supplier SupplierTaxIdentification NetCostPoint NetCostPointRule
 
 show-urls: clean  ## Show all urls available on the app
 	$(DJANGO_CMD) show_urls
