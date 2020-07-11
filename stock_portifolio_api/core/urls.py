@@ -3,5 +3,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.HelloViewSet.as_view({'get': 'get'}), name='home')
+    path(
+        'transactions',
+        views.TransactionsViewSet.as_view({'get': 'list'}),
+        name='transactions',
+    )
 ]

@@ -1,7 +1,9 @@
 from rest_framework import viewsets
-from rest_framework.response import Response
+
+from core.models import Transaction
+from core.serializers import TransactionSerializer
 
 
-class HelloViewSet(viewsets.ViewSet):
-    def get(self, request):
-        return Response(data={'hellow': 'world'})
+class TransactionsViewSet(viewsets.ModelViewSet):
+    serializer_class = TransactionSerializer
+    queryset = Transaction.objects.all()
